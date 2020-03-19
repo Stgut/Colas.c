@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+//PROTOTIPO DE FUNCIONES:
+void encolar(); 
+char mostrarCabeza(); 
+char mostrarTalon();
+
+struct NodoColaDoble{
+	char dato;
+	struct NodoColaDoble *ptrSiguiente;
+	struct NodoColaDoble *ptrAnterior;
+};
+int main()
+{
+    struct NodoColaDoble *ptrCabeza;
+    struct NodoColaDoble *ptrTalon;
+    
+     encolar(ptrCabeza, ptrTalon);
+    
+     mostrarCabeza(ptrCabeza);
+     mostrarTalon(ptrTalon);
+    
+       return 0;
+}
+void encolar(struct NodoColaDoble **ptrC, struct NodoColaDoble **ptrT){
+	
+	struct NodoColaDoble *ptrNuevo;
+	char nuevaLetra;
+	int opcion=0;
+	ptrNuevo= NULL;
+	
+	printf("Por que apuntador deseas ingresar?\n1.- Talon\n2.- Cabeza\n");
+    scanf("%d", &opcion);
+    
+    printf("Ingresa la letra que quieres agregar\n");
+    scanf(" %c", &nuevaLetra);
+   
+    ptrNuevo = (struct NodoColaDoble *)malloc(sizeof(struct NodoColaDoble *));
+
+    if (ptrNuevo != NULL){
+        ptrNuevo->dato = nuevaLetra;
+        ptrNuevo->ptrSiguiente = NULL;
+        ptrNuevo->ptrAnterior = NULL;
+
+        if(*ptrC == NULL){
+            *ptrC = ptrNuevo;
+            *ptrT = ptrNuevo;
+        }else{
+            if (opcion == 1){
+                //ingresa por talon
+                (*ptrT)->ptrSiguiente = ptrNuevo;
+                ptrNuevo -> ptrAnterior = (*ptrT);
+                (*ptrT)= ptrNuevo;
+            }else if (opcion == 2){
+                //ingresa por cabeza
+                (*ptrC)->ptrAnterior = ptrNuevo;
+                ptrNuevo->ptrSiguiente = (*ptrC);
+                *ptrC = ptrNuevo;
+            }
+        }
+    }
+}
+char mostrarCabeza(struct NodoColaDoble *ptrC){
+    if (ptrC == NULL){
+        printf("La cola esta vacia\n");
+        return;
+    }
+    printf("la cola cabeza %i: \n");
+    while (ptrC != NULL) {
+        printf("%c ===> ", ptrC->dato);
+        ptrC = ptrC->ptrSiguiente;
+
+    }
+    printf("NULL\n");
+}
+char mostrarTalon(struct NodoColaDoble *ptrT){
+    if (ptrT == NULL){
+        printf("La cola esta vacia\n");
+        return;
+    }
+    printf("la cola talon %i: \n");
+    while (ptrT != NULL) {
+        printf("%c ===> ", ptrT->dato);
+        ptrT = ptrT->ptrAnterior; 
+    }
+    printf("NULL\n");
+    
+}
+/*    char palabra[20];
+    int i, j;
+    int palindromo = 1;
+    printf("Escribe una cadena: ");
+    fflush(stdout);
+    gets(palabra);
+    j=strlen(palabra)-1;
+    for(i=0; i<strlen(palabra)/2; i++, j--) {
+        printf("Comprobando %c==%c\n", *(palabra+i), *(palabra+j));
+        if ((palabra+i)!=(palabra+j)) {
+            palindromo = 0;
+            break;
+
+        }
+    }
+    if (palindromo)
+        printf("\nEs un palíndrimo.\n");
+    else
+        printf("\nNo es un palíndrimo.\n");
+ 
+    return (0);
+}*/
